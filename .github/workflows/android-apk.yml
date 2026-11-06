@@ -1,0 +1,51 @@
+name: Build Getaway Crew Android APK
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'android/**'
+      - '.github/workflows/android-apk.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: getaway-apk-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+      - name: Install Android SDK
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Build installable debug APK
+        working-directory: android
+        run: gradle --no-daemon :app:assembleDebug
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Getaway-Crew-Android-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+      - name: Publish stable GitHub release download
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk Getaway-Crew-Android.apk
+          if gh release view android-latest >/dev/null 2>&1; then
+            gh release upload android-latest Getaway-Crew-Android.apk --clobber
+          else
+            gh release create android-latest Getaway-Crew-Android.apk --target "${{ github.sha }}" --title "The Getaway Crew Android preview" --notes "Android debug APK for testing. Displays the Getaway Crew website. Not a Play Store release." --prerelease
+          fi
