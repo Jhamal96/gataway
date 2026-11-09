@@ -1,0 +1,57 @@
+/* Independent Getaway Crew — visual parity with Floot coastal theme */
+:root{--background:#10272b;--foreground:#edf2e9;--card:#1b3438;--surface:#1c3639;--muted-foreground:#b0c3bd;--border:#365254;--primary:#91d2cd;--primary-foreground:#103438;--secondary:#2a4749;--radius:16px}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;background:var(--background)!important;color:var(--foreground)!important;font-family:'DM Sans',sans-serif!important}
+.site-header{display:flex;align-items:center;justify-content:space-between;padding:25px max(5%,calc((100vw - 1400px)/2));gap:20px;background:var(--card);border-bottom:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:14px;font:400 25px/1.15 'Fraunces',serif!important;color:var(--foreground)!important}
+.brand-symbol{font:400 34px/1 'DM Sans',sans-serif;display:grid;place-items:center;border:2px solid var(--foreground);width:37px;height:37px;border-radius:50%;transform:rotate(-35deg)}
+.brand-copy{display:block}.brand-copy small{display:block;font:700 8px 'DM Sans',sans-serif;letter-spacing:2.5px;margin-top:8px}
+.wrap{max-width:1400px!important;padding:42px 5% 40px!important;margin:auto}
+h1,h2,h3{font-family:'Fraunces',serif!important;font-weight:400!important;letter-spacing:-.025em}
+h1{font-size:clamp(36px,4.5vw,60px)!important;line-height:1.13;margin:14px 0 8px}
+h2{font-size:clamp(27px,3vw,42px);line-height:1.15}
+h3{font-size:23px}
+p,.muted{font-size:14px;line-height:1.7;color:var(--muted-foreground)!important}
+.eyebrow{font-size:10px!important;letter-spacing:2.2px!important;font-weight:700;color:var(--muted-foreground)!important;text-transform:uppercase}
+button,.btn{font:600 13px 'DM Sans',sans-serif!important;background:var(--primary)!important;color:var(--primary-foreground)!important;border:1px solid transparent!important;border-radius:11px!important;padding:11px 17px!important;transition:transform .15s ease,background-color .15s ease,box-shadow .15s ease}
+button:hover{transform:translateY(-1px);box-shadow:0 4px 14px #0002}
+button.alt,.btn.alt{background:transparent!important;color:var(--foreground)!important;border-color:var(--border)!important}
+button.soft{background:#ffffff22!important;color:white!important;backdrop-filter:blur(9px);border-color:#ffffff35!important}
+button.linkish{background:transparent!important;border:0!important;color:var(--primary)!important;padding-left:0!important}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--primary);outline-offset:2px}
+input,textarea,select{background:#142c30!important;border:1px solid var(--border)!important;border-radius:10px!important;color:var(--foreground)!important;font-family:'DM Sans',sans-serif!important;padding:12px!important}
+label{font-size:13px}
+.panel,.trip-card{background:var(--card)!important;border:1px solid var(--border)!important;border-radius:16px!important;box-shadow:0 12px 28px #06191a13!important}
+.panel{padding:24px!important}
+.title-row{display:flex;justify-content:space-between;align-items:center;gap:30px;margin:8px 0 35px}
+.title-row h1{letter-spacing:-1.8px!important}
+.title-row p{margin:0}
+.cta{font-size:14px!important;padding:16px 24px!important;border-radius:17px!important;min-width:205px}
+.beach-hero{position:relative;display:flex;align-items:center;min-height:420px;padding:48px 42px;border-radius:24px;overflow:hidden;color:white;background:linear-gradient(90deg,#123b44cf 0%,#123b4470 48%,#123b4428 100%),url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=86') center 57%/cover}
+.beach-hero h2{font-size:clamp(37px,4.4vw,57px);line-height:1.11;color:#fff;margin:27px 0 15px}
+.beach-hero p{color:#f2f5ee!important;font-size:15px;margin:0 0 20px}
+.pill{display:inline-block;border:1px solid #ffffff83;border-radius:999px;padding:10px 14px;font:600 10px 'DM Sans',sans-serif;letter-spacing:1.6px;color:#fff;background:#ffffff18}
+.photo-caption{position:absolute;bottom:20px;right:24px;color:#fff;font-size:11px}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:38px 0 20px}
+.section-head h2{margin:0;font-size:27px}
+.section-head span{font-size:10px;letter-spacing:1.4px;color:var(--muted-foreground)}
+.inspiration-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.trip-card{overflow:hidden}.trip-card img{display:block;width:100%;height:185px;object-fit:cover}.trip-card>div{padding:20px}
+.trip-card .eyebrow{color:var(--primary)!important}
+.trip-card h3{margin:12px 0 4px}
+.callout{display:flex;align-items:center;gap:20px;border-radius:17px;background:var(--surface);padding:25px;margin:30px 0}
+.callout>span{font-size:36px;color:var(--primary)}
+.callout h3{margin:0}.callout p{margin:6px 0 0}
+.auth-panel{margin:25px 0!important;display:grid;grid-template-columns:1fr 1.2fr;gap:25px;max-width:850px}
+.auth-panel h2{margin:10px 0}
+.auth-panel .stack{gap:10px}
+.hidden{display:none!important}
+.badge{display:inline-flex;background:var(--secondary)!important;color:var(--foreground)!important;border-radius:999px;font-size:12px;padding:7px 11px}
+.tabs{padding:17px 0}
+a{color:var(--primary)}
+dialog{background:var(--card)!important;border:1px solid var(--border)!important;color:var(--foreground)!important;border-radius:18px!important;box-shadow:0 20px 80px #0008}
+dialog::backdrop{background:#041b1fd9;backdrop-filter:blur(4px)}
+footer{color:var(--muted-foreground)!important;padding-top:35px;border-top:1px solid var(--border);font-size:11px}
+@media(max-width:760px){.site-header{padding:18px 5%}.brand{font-size:19px!important}.brand-copy small{font-size:6px;letter-spacing:1.8px}.brand-symbol{font-size:23px;width:30px;height:30px}.wrap{padding:28px 5% 38px!important}.title-row{flex-direction:column;align-items:flex-start;gap:22px}.cta{min-width:auto}.beach-hero{padding:30px 25px;min-height:365px}.beach-hero h2{font-size:38px}.photo-caption{display:none}.inspiration-grid,.auth-panel{grid-template-columns:1fr}.section-head>span{display:none}.callout{align-items:flex-start}.site-header .actions{gap:5px}.site-header button{padding:9px 10px!important;font-size:12px!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
