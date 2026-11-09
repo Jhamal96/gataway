@@ -2,30 +2,35 @@
 
 **Plan together. Go together. Make memories.**
 
-This repository now includes a responsive HTML/CSS/JavaScript site modeled on the existing Floot app's coastal-travel design, trip types, section names, and planning interactions.
+## Live website and shared sign-in
+- Branded entry point: https://getaway.ajdapp.org/
+- Shared Floot application: https://the-getaway-crew.floot.app/
+- The branded Cloudflare Worker redirects to Floot to ensure the **same UI, login, real trip data, membership, invitation links, and settings** on web and app. This is intentional: the old HTML frontend used browser-only local storage and could not securely share Floot sessions.
+- The GitHub `index.html` also directs visitors to Floot so GitHub Pages visitors get the same application.
 
-## Open the website
+## Android
+- The Android WebView loads `https://the-getaway-crew.floot.app/` directly. It uses the Floot backend and **same accounts**, but Android's WebView may maintain its own login session.
+- GitHub Actions builds the Android test APK from `android/` when that directory changes.
+- APK download (release channel): https://github.com/Jhamal96/gataway/releases/download/android-latest/Getaway-Crew-Android.apk
+- Debug/test build, not a Google Play release. If an older build was signed with a different debug key, uninstalling the older APK may be needed before installing the new one.
+- Web PWA can be installed using the browser's Add to Home Screen / Install app controls.
 
-Publish this repository using GitHub Pages or connect it to the existing Cloudflare `gataway` site. The entry point is `index.html`. All assets are relative to the site's path. Preview locally using a static web server.
+## Features maintained in Floot
+- Trip types (including cruise) with compact type-specific forms, editable/optional dates, and multiple trip links.
+- Best-effort metadata previews for supported public travel domains.
+- Trip departure countdown; optional personal monthly savings estimate; descriptive trip sections.
+- 12-character randomized invitation codes for new trips or rotated codes, plus shareable invitation links.
+- Private membership, organizers, RSVPs, shared itinerary, voting, payments tracking, task lists and memories.
 
-## Functionality in the GitHub edition
+## Legacy browser-only editor and preservation
+- `local.html` preserves the previous HTML/CSS/JS local-only planner for exporting any previously saved browser data.
+- The Cloudflare Worker also serves `https://getaway.ajdapp.org/local.html` as an archival editor under the same origin; select **Export plans** there to save a JSON backup before deleting browser data.
+- Older data in browser localStorage is **not automatically migrated** to Floot. Never assume that locally created trips are visible to other accounts.
+- `app.js`, `styles.css` and `manifest.webmanifest` remain solely to support this local backup editor.
 
-- Create, edit, duplicate and filter customizable trips (multiple types, flexible sections, status, dates, timezone and budget).
-- Crew household planning notes and RSVPs; dates, ideas and votes, itineraries, expenses and reported/confirmed payments, bookings, rooms/rides, checklists, group feed, memory/photo links, and preferences.
-- Mobile-friendly layout inspired by the Floot design; theme modes System/Light/Dark/AMOLED, adjustable Liquid Glass and installable manifest.
-- Print trip summary / save to PDF, export a JSON backup and import it later.
-- Automatic save in *this browser only* via `localStorage`.
+## Download Hub
+- The Download Hub's Supabase `public.apps` catalog lists the branded website and verified Android APK.
+- https://download.ajdapp.org/
 
-## Security and synchronization limitations
-
-**This standalone GitHub build is NOT connected to Floot login, Floot database, Supabase Auth, or a secure group-trip API.** It does not synchronize trips across browsers, devices or users; invitation codes and per-user access controls are not supported. Member roles and visibility labels are planning notes only. Don't put secrets, passwords, or private trip/financial information into the static edition. The Floot version remains the source of truth for private collaborative trips and authenticated access.
-
-To establish real shared data, both sites need to use a purpose-built, secured API with server-side authorization (for example, a dedicated Supabase schema with appropriate RLS policies), plus an explicit account-linking plan. Never expose service-role keys in GitHub or browser code, and never assume existing Floot sessions can be reused directly on another domain.
-
-## Hosting
-
-For **GitHub Pages**: Repository Settings → Pages → Deploy from a branch → `main` → `/ (root)`. If available, it will be hosted at `https://jhamal96.github.io/gataway/`. This URL is a proposed convention, not verified active.
-
-For **Cloudflare**: point the existing `gataway` site at this repository's static assets, preserving any existing Worker routing until reviewed. No Cloudflare deployment has been made by this change.
-
-The full Floot app has its own hosting lifecycle and private database. Updates to Floot do not automatically propagate to the static GitHub edition.
+## Security
+Authentication and trip membership are enforced by Floot's backend. Do not store passwords or Floot session tokens in the GitHub static files. The worker is a navigation redirect, not an auth proxy; it does not expose any authentication secrets. Existing Supabase authentication accounts were not modified.
