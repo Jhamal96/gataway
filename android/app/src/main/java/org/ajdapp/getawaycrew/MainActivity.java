@@ -15,7 +15,7 @@ import android.graphics.Color;
 
 public class MainActivity extends Activity {
  private WebView browser;
- private static final String HOME="https://getaway.ajdapp.org/";
+ private static final String HOME="https://the-getaway-crew.floot.app/";
  @Override public void onCreate(Bundle state) {
   super.onCreate(state);
   browser=new WebView(this);
@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
   browser.setWebViewClient(new WebViewClient(){
    @Override public boolean shouldOverrideUrlLoading(WebView view,WebResourceRequest req) {
     Uri uri=req.getUrl();
-    if("https".equals(uri.getScheme())&&"getaway.ajdapp.org".equals(uri.getHost()))return false;
+    if("https".equals(uri.getScheme())&&("the-getaway-crew.floot.app".equals(uri.getHost())||"getaway.ajdapp.org".equals(uri.getHost())))return false;
     try { startActivity(new Intent(Intent.ACTION_VIEW,uri)); }catch(Exception ignored){}
     return true;
    }
