@@ -1,7 +1,7 @@
 -- 12-character, 72-bit invitation codes and a controlled join operation.
 create or replace function getaway.new_invite_code()
 returns text language sql volatile set search_path = ''
-as $$ select translate(rtrim(encode(gen_random_bytes(9),'base64'),'='),'+/','-_') $$;
+as $$ select translate(rtrim(encode(extensions.gen_random_bytes(9),'base64'),'='),'+/','-_') $$;
 alter table public.getaway_trips alter column invite_code set default getaway.new_invite_code();
 create or replace function public.getaway_join_trip(p_code text)
 returns uuid language plpgsql security definer set search_path = ''
