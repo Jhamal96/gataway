@@ -1,0 +1,19 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Getaway Crew 2.0 · Development Admin</title><style>body{font:16px system-ui;background:#eef5f3;color:#153d3d;margin:0;padding:32px}main{max-width:680px;margin:auto;background:white;padding:28px;border-radius:18px;box-shadow:0 8px 30px #1232}input,select,button{font:inherit;padding:11px;margin:5px 0;border-radius:8px;border:1px solid #abc;width:100%;box-sizing:border-box}button{background:#176b69;color:white;cursor:pointer}button:disabled{opacity:.5}label{display:block;margin-top:12px}#status{white-space:pre-wrap}section{margin-top:20px}small{color:#526}</style></head><body><main><h1>The Getaway Crew 2.0</h1><p>Development administrator access</p><p id="status" role="status">Checking configuration…</p><section id="login" hidden><label>Email<input id="email" type="email" autocomplete="username"></label><label>Password<input id="password" type="password" autocomplete="current-password"></label><button id="signIn">Sign in</button><button id="recover" type="button">Send password recovery email</button></section><section id="dashboard" hidden><h2>Primary Owner</h2><p id="identity"></p><label>Invite email<input id="inviteEmail" type="email"></label><label>Role<select id="role"><option value="viewer">Viewer</option><option value="manager">Manager</option><option value="full_admin">Full Admin</option></select></label><button id="invite">Create pending invitation</button><small>Creating a pending record does not send an email. Email delivery and acceptance will be enabled after testing.</small><button id="signOut">Sign out</button></section></main><script type="module">
+import {createClient} from 'https://esm.sh/@supabase/supabase-js@2';
+const $=id=>document.getElementById(id), status=m=>$('status').textContent=m;
+const cfg=window.GETAWAY_ADMIN_CONFIG;
+if(!cfg?.url||!cfg?.publishableKey){status('Development configuration required. Sign-in is not enabled yet.');}
+else {
+ const sb=createClient(cfg.url,cfg.publishableKey);
+ async function refresh(){const {data:{user},error}=await sb.auth.getUser();if(error||!user){$('login').hidden=false;$('dashboard').hidden=true;status('Sign in to continue.');return}
+ const {data, error:roleError}=await sb.from('getaway_admin_roles').select('role').eq('user_id',user.id).maybeSingle();
+ $('login').hidden=true;$('dashboard').hidden=data?.role!=='primary_admin';
+ $('identity').textContent=user.email||'';
+ status(roleError?'Unable to verify permissions.':data?.role==='primary_admin'?'Primary Owner access verified.':'This account is not authorized for the Admin Dashboard.');
+ }
+ $('signIn').onclick=async()=>{const {error}=await sb.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error)status(error.message);else await refresh()};
+ $('recover').onclick=async()=>{const email=$('email').value.trim();if(!email){status('Enter your email first.');return}const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+'/admin/'});status(error?error.message:'If this account supports recovery, check your email. A password-update screen is still required.')};
+ $('invite').onclick=async()=>{status('Invitation backend is restricted until the secure owner-only API is exposed and tested. No invitation created.');};
+ $('signOut').onclick=async()=>{await sb.auth.signOut();await refresh()};await refresh();
+}
+</script></body></html>
