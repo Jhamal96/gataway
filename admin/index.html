@@ -16,7 +16,7 @@ else {
  }
  $('signIn').onclick=async()=>{const {error}=await sb.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error)status(error.message);else await refresh()};
  $('recover').onclick=async()=>{const email=$('email').value.trim();if(!email){status('Enter your email first.');return}const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+'/admin/'});status(error?error.message:'If this account supports recovery, check your email. A password-update screen is still required.')};
- $('invite').onclick=async()=>{status('Invitation backend is restricted until the secure owner-only API is exposed and tested. No invitation created.');};
+ $('invite').onclick=async()=>{const email=$('inviteEmail').value.trim();const role=$('role').value;if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){status('Enter a valid invitation email.');return}if(!['viewer','manager','full_admin'].includes(role)){status('Choose a valid role.');return}const button=$('invite');button.disabled=true;status('Creating pending invitation…');try{const {data,error}=await sb.rpc('getaway_owner_create_invitation',{p_email:email,p_role:role,p_permissions:{}});if(error)throw error;status('Pending invitation created ('+data+'). No email has been sent.');$('inviteEmail').value='';}catch(e){status('Invitation could not be created: '+e.message)}finally{button.disabled=false}};
  $('signOut').onclick=async()=>{await sb.auth.signOut();await refresh()};if(location.hash.includes('type=recovery')||new URLSearchParams(location.search).get('type')==='recovery'){recoveryMode=true;$('resetPanel').hidden=false;status('Complete password recovery after opening the email link.');}else await refresh();
 }
 </script></body></html>
