@@ -17,3 +17,10 @@ The development dashboard at `development/security-testing.html` currently runs 
 6. Review before any production rollout.
 
 No owner account has been bootstrapped or linked. Live Floot and production remain untouched.
+
+## Reserved developer account (not provisioned)
+- Email: `alain_dabady@yahoo.com`
+- Status: reserved for later development signup; no password, credential, or auth user created.
+- Activation: owner must choose a password or complete a secure passwordless verification flow later.
+- Do not automatically grant platform primary-owner access based on matching email. Bind authorization to a verified Supabase Auth user ID after explicit approval.
+- Do not send invitations or password reset messages without a separate request.
